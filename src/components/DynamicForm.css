@@ -1,0 +1,185 @@
+/* Base styles */
+body {
+  background: #f0f2f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 2rem;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+/* Form box */
+.dynamic-form {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  transition: all 0.3s ease-in-out;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1rem;
+}
+
+.form-required {
+  color: #e63946;
+  margin-left: 4px;
+}
+
+/* Inputs and focus */
+.form-input,
+.form-checkbox,
+textarea {
+  font-size: 1rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+
+.form-input:focus,
+textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.form-checkbox {
+  transform: scale(1.2);
+}
+
+/* Radios */
+.form-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Errors */
+.form-error {
+  color: #d9534f;
+  margin-top: 0.3rem;
+  font-size: 0.875rem;
+}
+
+/* Submit button */
+.form-submit {
+  background-color: #007bff;
+  color: white;
+  padding: 0.75rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-submit:hover {
+  background-color: #0056b3;
+}
+.form-button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.form-reset {
+  background-color: #6c757d;
+  color: white;
+  padding: 0.75rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-reset:hover {
+  background-color: #5a6268;
+}
+
+
+/* JSON Editor */
+.json-editor {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+.json-editor h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.json-editor textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.json-editor textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .dynamic-form,
+  .json-editor {
+    padding: 1.5rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+  }
+
+  .form-radio-group {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-submit {
+    width: 100%;
+    padding: 0.75rem;
+  }
+}
