@@ -48,20 +48,40 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
   };
 
   const renderField = (field: FieldConfig) => {
+    const commonProps = {
+      name: field.name,
+      value: state.values[field.name] || '',
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, field),
+      placeholder: `Enter ${field.label}`,
+    };
+  
     switch (field.type) {
       case 'text':
       case 'email':
-      case 'number':
         return (
           <input
             className="form-input"
             type={field.type}
-            name={field.name}
-            value={state.values[field.name] || ''}
-            onChange={(e) => handleChange(e, field)}
-            placeholder={`Enter ${field.label}`}
+            {...commonProps}
           />
         );
+  
+        case 'number':
+          return (
+            <input
+              className="form-input"
+              type="number"
+              {...commonProps}
+              min="0"
+              onWheel={(e) => e.currentTarget.blur()}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'e') {
+                  e.preventDefault();
+                }
+              }}
+            />
+          );
+  
       case 'checkbox':
         return (
           <div className="form-checkbox-group">
@@ -69,13 +89,14 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
               className="form-checkbox"
               type="checkbox"
               name={field.name}
-              checked={state.values[field.name] || false}
+              checked={!!state.values[field.name]}
               onChange={(e) => handleChange(e, field)}
               id={field.name}
             />
             <label htmlFor={field.name}>{field.label}</label>
           </div>
         );
+  
       case 'radio':
         return (
           <div className="form-radio-group">
@@ -93,11 +114,12 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
             ))}
           </div>
         );
+  
       default:
         return null;
     }
   };
-
+  
   const handleJSONChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     try {
       const newConfig = JSON.parse(e.target.value);
