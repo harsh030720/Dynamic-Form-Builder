@@ -82,20 +82,22 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
             />
           );
   
-      case 'checkbox':
-        return (
-          <div className="form-checkbox-group">
-            <input
-              className="form-checkbox"
-              type="checkbox"
-              name={field.name}
-              checked={!!state.values[field.name]}
-              onChange={(e) => handleChange(e, field)}
-              id={field.name}
-            />
-            <label htmlFor={field.name}>{field.label}</label>
-          </div>
-        );
+          case 'checkbox':
+            return (
+              <div className="form-checkbox-group">
+                <label htmlFor={field.name}>
+                  <input
+                    className="form-checkbox"
+                    type="checkbox"
+                    id={field.name}
+                    name={field.name}
+                    checked={!!state.values[field.name]}
+                    onChange={(e) => handleChange(e, field)}
+                  />
+                  {field.label}
+                </label>
+              </div>
+            );
   
       case 'radio':
         return (
