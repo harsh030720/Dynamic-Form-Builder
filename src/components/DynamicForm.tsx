@@ -21,8 +21,8 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
     setDynamicConfig(config);
   }, [config]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, field: FieldConfig) => {
-    const value = field.type === 'checkbox' ? e.target.checked : e.target.value;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: FieldConfig) => {
+    const value = field.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
     dispatch({ type: 'UPDATE_FIELD', name: field.name, value });
   };
 
@@ -48,57 +48,34 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
   };
 
   const renderField = (field: FieldConfig) => {
-    const commonProps = {
-      name: field.name,
-      value: state.values[field.name] || '',
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, field),
-      placeholder: `Enter ${field.label}`,
-    };
-  
     switch (field.type) {
       case 'text':
       case 'email':
+      case 'number':
         return (
           <input
             className="form-input"
             type={field.type}
-            {...commonProps}
+            name={field.name}
+            value={state.values[field.name] || ''}
+            onChange={(e) => handleChange(e, field)}
+            placeholder={`Enter ${field.label}`}
           />
         );
-  
-        case 'number':
-          return (
+      case 'checkbox':
+        return (
+          <div className="form-checkbox-group">
             <input
-              className="form-input"
-              type="number"
-              {...commonProps}
-              min="0"
-              onWheel={(e) => e.currentTarget.blur()}
-              onKeyDown={(e) => {
-                if (e.key === '-' || e.key === 'e') {
-                  e.preventDefault();
-                }
-              }}
+              className="form-checkbox"
+              type="checkbox"
+              name={field.name}
+              checked={state.values[field.name] || false}
+              onChange={(e) => handleChange(e, field)}
+              id={field.name}
             />
-          );
-  
-          case 'checkbox':
-            return (
-              <div className="form-checkbox-group">
-                <label htmlFor={field.name}>
-                  <input
-                    className="form-checkbox"
-                    type="checkbox"
-                    id={field.name}
-                    name={field.name}
-                    checked={!!state.values[field.name]}
-                    onChange={(e) => handleChange(e, field)}
-                  />
-                  {field.label}
-                </label>
-              </div>
-            );
-  
+            <label htmlFor={field.name}>{field.label}</label>
+          </div>
+        );
       case 'radio':
         return (
           <div className="form-radio-group">
@@ -116,12 +93,27 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
             ))}
           </div>
         );
-  
+      case 'select':
+        return (
+          <select
+            className="form-input"
+            name={field.name}
+            value={state.values[field.name] || ''}
+            onChange={(e) => handleChange(e, field)}
+          >
+            <option value="">-- Select --</option>
+            {field.options?.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+        );
       default:
         return null;
     }
   };
-  
+
   const handleJSONChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     try {
       const newConfig = JSON.parse(e.target.value);
@@ -133,6 +125,15 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
 
   return (
     <div className="form-container">
+        <div className="json-editor">
+        <h3>Edit Form JSON</h3>
+        <textarea
+          rows={20}
+          cols={50}
+          defaultValue={JSON.stringify(config, null, 2)}
+          onChange={handleJSONChange}
+        ></textarea>
+      </div>
       <form className="dynamic-form" onSubmit={handleSubmit} noValidate>
         {dynamicConfig.fields.map((field) => (
           <div key={field.name} className="form-group">
@@ -150,18 +151,10 @@ const DynamicForm: React.FC<FormProps> = ({ config }) => {
         ))}
         <div className="form-button-group">
           <button type="submit" className="form-submit">Submit</button>
-          <button type="button" className="form-reset"  onClick={handleReset}>Reset</button>
+          <button type="button" className="form-reset" onClick={handleReset}>Reset</button>
         </div>
       </form>
-      <div className="json-editor">
-        <h3>Edit Form JSON</h3>
-        <textarea
-          rows={20}
-          cols={50}
-          defaultValue={JSON.stringify(config, null, 2)}
-          onChange={handleJSONChange}
-        ></textarea>
-      </div>
+    
     </div>
   );
 };

@@ -23,6 +23,13 @@ const formConfig = {
         type: 'checkbox'
       },
       {
+        name: "country",
+        label: "Country",
+        type: "select",
+        required: true,
+        options: ["USA", "Canada", "India"]
+      },
+      {
         name: 'gender', 
         label: 'Gender',
         type: 'radio',
